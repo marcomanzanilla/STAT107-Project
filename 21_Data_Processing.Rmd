@@ -1,0 +1,53 @@
+---
+title: "21_Data_Processing"
+author: "Tirth P, Riya A, Marco M"
+date: "2026-10-31"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("01_funct_Data_Processing.R")
+```
+
+## Load the cleaned data
+```{r}
+load("12_DataSaving.RData")
+```
+
+
+Percents of COVID and Pneumonia deaths to all deaths, and the percent of Pneumonia deaths in Pneumonia and COVID deaths.
+```{r}
+covid_cleaned$covid_pct_of_all <- percent_of(covid_cleaned$COVID.19.Deaths,
+                                             covid_cleaned$Total.Deaths)
+covid_cleaned$pneu_pct_of_all <- percent_of(covid_cleaned$Pneumonia.Deaths,
+                                            covid_cleaned$Total.Deaths)
+covid_cleaned$pneu_pct_of_covid <- percent_of(
+                                   covid_cleaned$Pneumonia.and.COVID.19.Deaths, 
+                                   covid_cleaned$COVID.19.Deaths)
+covid_cleaned
+```
+
+Adding age bands so we can use numerics ages in future graphs.
+```{r}
+n_obs <- nrow(covid_cleaned)
+covid_cleaned$age_mid <- rep(0, n_obs)
+for (obs_ind in 1:n_obs) {
+  covid_cleaned$age_mid[obs_ind] <- get_age_mid(covid_cleaned$Age.Group[obs_ind])
+}
+
+covid_cleaned
+```
+
+Converting the age groups to factor so they're ordered properly so future plots/graphs don't misorder them.
+
+```{r}
+covid_cleaned$Age.Group <- factor(covid_cleaned$Age.Group,
+  levels = c("Under 1 year", "1-4 years", "5-14 years", "15-24 years",
+             "25-34 years", "35-44 years", "45-54 years", "55-64 years",
+             "65-74 years", "75-84 years", "85 years and over"),
+  ordered = TRUE)
+covid_cleaned
+```

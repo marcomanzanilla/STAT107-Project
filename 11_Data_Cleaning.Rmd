@@ -1,0 +1,112 @@
+---
+title: "11_Data_Cleaning"
+author: "Tirth P, Riya A, Marco M"
+date: "2026-10-29"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("01_funct_Data_Processing.R")
+```
+
+## Dataset before cleaning and pre processing
+```{r}
+covid <- read.csv("Provisional_COVID-19_Deaths_by_Sex_and_Age_20261027.csv")
+```
+
+How many observations our data set contains
+```{r}
+dim(covid)
+```
+
+The column names in the data set
+```{r}
+colnames(covid)
+```
+
+Overall Summary of the dataset
+```{r}
+summary(covid)
+```
+## Cleaning the Data
+
+Anaylzing how many values are missing inside the data set
+```{r}
+sum(is.na(covid))
+```
+I commented this out because it left a ton of rows with 0 values in the month
+and year. I left it here in case we can use it at some point.
+<!-- Replacing the missing values with 0 -->
+<!-- ```{r} -->
+<!-- for(col in 1:ncol(covid)){ -->
+<!--   for(row in 1:nrow(covid)){ -->
+<!--     if(is.na(covid[row,col]) || is.na(covid[row,col]) == " "){ -->
+<!--       covid[row,col] <- 0 -->
+<!--     } -->
+<!--   } -->
+<!-- } -->
+<!-- ``` -->
+
+
+There's a lot of overlap on totals, years, months, states, genders, and the age groups. To help clean it up, I'm going to keep only the national totals by sex and another national total by 11 age groups.
+
+```{r}
+covid <- covid[covid$Group == "By Total" &
+                     covid$State == "United States" &
+                     covid$Sex != "All Sexes" &
+                     covid$Age.Group != "All Ages" &
+                     covid$Age.Group != "0-17 years" &
+                     covid$Age.Group != "18-29 years" &
+                     covid$Age.Group != "30-39 years" &
+                     covid$Age.Group != "40-49 years" &
+                     covid$Age.Group != "50-64 years", ]
+dim(covid)
+```
+
+
+
+Fixing counts from being character into numeric.
+```{r}
+count_cols <- c("COVID.19.Deaths", "Total.Deaths", "Pneumonia.Deaths",
+                "Pneumonia.and.COVID.19.Deaths")
+covid <- covid[, c("Sex", "Age.Group", count_cols)]
+
+for (col_name in count_cols) {
+  covid[, col_name] <- clean_counts(covid[, col_name])
+}
+```
+
+Removing rows with a missing count.
+
+```{r}
+n_obs <- nrow(covid)
+missing <- rep(FALSE, n_obs)
+for (obs_ind in 1:n_obs) {
+  obs <- covid[obs_ind, count_cols]
+  n_missing <- sum(is.na(obs))
+  if (n_missing > 0) {
+    missing[obs_ind] <- TRUE
+  }
+}
+covid <- covid[!missing, ]
+```
+
+Final Checks on the dataset dimensions and missing rows.
+```{r}
+dim(covid)
+sum(is.na(covid))
+covid
+```
+
+
+## Final Datset after cleaning and pre processing
+I checked the files and they wanted us to use .Rdata so it can be reproduced and loaded and stuff, so I commented out the csv stuff for now.
+```{r}
+#write.csv(covid, "covid_cleaned.csv", row.names = FALSE)
+#covid_cleaned <- read.csv("covid_cleaned.csv")
+covid_cleaned <- covid
+save(covid_cleaned, file = "12_DataSaving.RData")
+```
