@@ -1,0 +1,100 @@
+---
+title: "21_Data_Processing"
+author: "Tirth P, Riya A, Marco M"
+date: "2026-10-31"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("01_funct_Data_Processing.R")
+```
+
+Loading the Clean Dataset
+```{r}
+load("12_DataSaving.RData")
+head(covid_cleaned)
+```
+
+## Plot 1: Histogram of COVID-19 Death Distribution
+
+```{r}
+
+hist(covid_cleaned$COVID.19.Deaths, 
+    main = "Distribution of Covid-19 Deaths",
+    xlab = "COVID-19 Deaths",
+    col = 'darkred',
+    breaks = 10)
+
+```
+
+This histogram displays the overall distribution and frequency of COVID-19 Deaths counts across all filters. It highlights that the lower death counts show up as small parts whereas the high deaths show up as a outlier.
+
+## Plot 2: Boxplot of COVID-19 Deaths by Sex
+
+```{r}
+boxplot(COVID.19.Deaths ~Sex,
+        data = covid_cleaned,
+        main = "COVID-19 Deaths by Sex",
+        xlab = "Sex",
+        ylab = 'COVID-19 Deaths',
+        col = c('pink','darkblue'))
+
+```
+
+This box plot compares the median, spread and range of COVID-19 deaths between males and females. It shows variability and highlights whether one group had a higher mortality rate
+
+
+## Plot 3: Bar Plot of COVID-19 deaths by age
+
+```{r}
+
+age_totals <- tapply(covid_cleaned$COVID.19.Deaths, covid_cleaned$Age.Group, sum)
+barplot(age_totals,
+        main = 'Total COVID-19 Deaths by age group',
+        xlab = 'Age Group',
+        ylab = 'COVID-19 Deaths',
+        col = 'darkred')
+
+```
+
+This bar plot shows the total COVID-19 Deaths across age groups only. We are clearly able to intrepret that as someone gets older, they have a higher mortality rate and are more prone to be affected by COVID-19
+
+
+## Plot 4: Scatter plot for percentage of all deaths
+```{r}
+age_combined <- aggregate(
+  cbind(COVID.19.Deaths, Total.Deaths) ~ Age.Group, 
+  data = covid_cleaned, 
+  sum
+)
+
+age_combined$Age.Group <- factor(
+  age_combined$Age.Group,
+  levels = c("Under 1 year", "1-4 years", "5-14 years", "15-24 years",
+             "25-34 years", "35-44 years", "45-54 years", "55-64 years",
+             "65-74 years", "75-84 years", "85 years and over"),
+  ordered = TRUE
+)
+age_combined <- age_combined[order(age_combined$Age.Group), ]
+
+
+pct <- (age_combined$COVID.19.Deaths / age_combined$Total.Deaths) * 100
+
+
+plot(
+  pct, 
+  type = "b", 
+  pch = 20,
+  xaxt = "n",
+  xlab = '',
+  ylab = "COVID-19 % of Total Deaths",
+  main = "COVID-19 Share of Total Deaths by Age"
+)
+
+axis(1, at = 1:nrow(age_combined), labels = age_combined$Age.Group, las = 2)
+```
+
+This line plot shows the percentage of COVID-19 deaths relative to total deaths across the age groups. It portrays how the percentage of deaths change with the age groups.
