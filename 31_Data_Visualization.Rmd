@@ -1,5 +1,5 @@
 ---
-title: "21_Data_Processing"
+title: "31_Data_Visualization"
 author: "Tirth P, Riya A, Marco M"
 date: "2026-10-31"
 output:
@@ -9,12 +9,13 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+source("00_requirements.R")
 source("01_funct_Data_Processing.R")
 ```
 
 Loading the Clean Dataset
 ```{r}
-load("12_DataSaving.RData")
+load("22_DataSaving.RData")
 head(covid_cleaned)
 ```
 
@@ -63,7 +64,7 @@ barplot(age_totals,
 This bar plot shows the total COVID-19 Deaths across age groups only. We are clearly able to intrepret that as someone gets older, they have a higher mortality rate and are more prone to be affected by COVID-19
 
 
-## Plot 4: Scatter plot for percentage of all deaths
+## Plot 4: Line plot for percentage of all deaths
 ```{r}
 age_combined <- aggregate(
   cbind(COVID.19.Deaths, Total.Deaths) ~ Age.Group, 
@@ -98,3 +99,32 @@ axis(1, at = 1:nrow(age_combined), labels = age_combined$Age.Group, las = 2)
 ```
 
 This line plot shows the percentage of COVID-19 deaths relative to total deaths across the age groups. It portrays how the percentage of deaths change with the age groups.
+
+## Plot 5: COVID-19 vs. Pneumonia Share of Deaths by Age and Sex
+
+```{r}
+male <- covid_cleaned[covid_cleaned$Sex == "Male", ]
+female <- covid_cleaned[covid_cleaned$Sex == "Female", ]
+
+par(mfrow = c(1, 2), mar = c(8, 4, 4, 1))
+
+plot(male$covid_pct_of_all, type = "b", ylim = c(0, 12), xaxt = "n",
+     xlab = "", ylab = "% of all deaths", main = "Male")
+lines(male$pneu_pct_of_all, type = "b", col = "blue")
+axis(1, at = 1:11, labels = male$Age.Group, las = 2)
+legend("bottomright", legend = c("COVID-19", "Pneumonia"),
+       col = c("black", "blue"), lty = 1)
+
+
+plot(female$covid_pct_of_all, type = "b", ylim = c(0, 12), xaxt = "n",
+     xlab = "", ylab = "% of all deaths", main = "Female")
+lines(female$pneu_pct_of_all, type = "b", col = "blue")
+axis(1, at = 1:11, labels = female$Age.Group, las = 2)
+legend("bottomright", legend = c("COVID-19", "Pneumonia"),
+       col = c("black", "blue"), lty = 1)
+
+par(mfrow = c(1, 1))
+```
+These line plots compares how much of all deaths in each age group are due to COVID-19 versus pneumonia. Sex is shown separately to see whether age and sex change which illness accounts for more deaths.
+
+Both COVID-19 and pneumonia related deaths increase as age increases, so age has a visible effect on deaths. Sex does not appear to have a large effect between them, as the two lines follow similar patterns. However, at ages 85 and older, the shares drop for females by about 2-3% in both COVID-19 and pneumonia while males stay near 10%.

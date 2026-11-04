@@ -1,0 +1,12 @@
+---
+title: "Final Report"
+author: "Tirth P, Riya A, Marco M"
+date: "2026-11-04"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```

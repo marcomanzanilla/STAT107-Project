@@ -9,6 +9,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+source("00_requirements.R")
 source("01_funct_Data_Processing.R")
 ```
 

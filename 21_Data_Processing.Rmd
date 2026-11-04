@@ -9,6 +9,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+source("00_requirements.R")
 source("01_funct_Data_Processing.R")
 ```
 
@@ -50,4 +51,9 @@ covid_cleaned$Age.Group <- factor(covid_cleaned$Age.Group,
              "65-74 years", "75-84 years", "85 years and over"),
   ordered = TRUE)
 covid_cleaned
+```
+
+## Save the processed data
+```{r}
+save(covid_cleaned, file = "22_DataSaving.RData")
 ```
