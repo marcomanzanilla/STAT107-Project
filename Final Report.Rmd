@@ -1,6 +1,6 @@
 ---
-title: "Final Report"
-author: "Tirth P, Riya A, Marco M"
+title: "COVID-19 Final Report"
+author: "Tirth P, Riya A, Marco M - Team 9"
 date: "2026-11-04"
 output:
   pdf_document: default
@@ -11,14 +11,43 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-**WRITE-UP & ANALYSES: HALF_WAY EVALUATION**
 
-**INTRODUCTION**
+## Main Question and Summary
+
+* Our main question that we are aiming to answer is How do different demographics (age and sex) affect COVID-19 mortality rates? With our current results, we can infer that as a person gets old, they are more likely to get affected by COVID-19 and it is more likely to be fatal for them. We are also able to see that males have a higher mortality rate compared to women which was surprising to us. 
 
 
+## INTRODUCTION
 
-**DATA**
+* Our central question that motivates our analysis: How do different demographics (age and sex) affect COVID-19 or other disease mortality rates? This analysis will benefit the CDC and hospitals because they will be able to deter who needs special attention based on their demographics and symptoms. We are trying to test a hypothesis because COVID-19 is a disease to which certain people are affected more than others and we are trying to classify that demographic based on our analysis.   
 
-**VISUALIZATIONS**
 
-**FUTURE WORK**
+## Executive Summary
+
+* People of age 60 years old and above are prone to COVID-19 and have a high mortality rate
+* Men have a higher mortality rate compared to women up until age 85. Women have a higher mortality rate when they are older than 85 years old.
+* We can infer that the demographic of age is affected by COVID-19 more than the demographic of sex
+
+## DATA
+
+* The Data available for this analysis: Provisional COVID-19 Deaths by Age and Sex
+* We retrieved this dataset from the CDC.gov website
+* There are 16 variables and 137700 Observations available
+* First, we cleaned the dataset to remove any blank spaces or any value not valid. 
+* Second, we then sent the dataset into preprocessing the data in order to make it structured and give us the ability to properly analyze and make plots on. 
+* The dataset data is not simulated and was retreived via real census on people from the CDC.
+* Dataset before any cleaning and preprocessing: [Provisional_COVID-19_Deaths_by_Sex_and_Age_20261027.csv]
+* Dataset preprocessing rmd file [21_Data_Processing.Rmd]
+* Our fully cleaned dataset is loaded into [22.DataSaving.RData] and the dataset is called [covid_cleaned]
+
+## VISUALIZATIONS
+* To view analysis on visualizations, go to [31_Data_Visulization.Rmd] file. You are also able to knit to to PDF
+
+## FUTURE WORK
+* We also plan to complete data anylsis on other diseases from our data such as Pneumonia. We plan to follow the same process that we followed for the COVID-19 mortality rates. 
+* That means, we plan to make plots, and draw conclusions about which demographic is affected the most. 
+
+## Summary of Individual Contribution
+* Riya Ashok: Finished Visualizations: Added three side-by-side bar plots for counts of COVID-19, Pneumonia, and Total Deaths by age group for males vs females.
+* Marco Manzanilla: Finished up data cleaning and processing, and added readme and visualizations
+* Tirth Patel: Started Data cleaning, Created Data Visualizations by adding initial 4 plots, finished up final report
