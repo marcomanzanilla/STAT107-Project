@@ -38,19 +38,6 @@ Anaylzing how many values are missing inside the data set
 ```{r}
 sum(is.na(covid))
 ```
-I commented this out because it left a ton of rows with 0 values in the month
-and year. I left it here in case we can use it at some point.
-<!-- Replacing the missing values with 0 -->
-<!-- ```{r} -->
-<!-- for(col in 1:ncol(covid)){ -->
-<!--   for(row in 1:nrow(covid)){ -->
-<!--     if(is.na(covid[row,col]) || is.na(covid[row,col]) == " "){ -->
-<!--       covid[row,col] <- 0 -->
-<!--     } -->
-<!--   } -->
-<!-- } -->
-<!-- ``` -->
-
 
 There's a lot of overlap on totals, years, months, states, genders, and the age groups. To help clean it up, I'm going to keep only the national totals by sex and another national total by 11 age groups.
 
@@ -66,8 +53,6 @@ covid <- covid[covid$Group == "By Total" &
                      covid$Age.Group != "50-64 years", ]
 dim(covid)
 ```
-
-
 
 Fixing counts from being character into numeric.
 ```{r}

@@ -31,7 +31,7 @@ hist(covid_cleaned$COVID.19.Deaths,
 
 ```
 
-This histogram displays the overall distribution and frequency of COVID-19 Deaths counts across all filters. It highlights that the lower death counts show up as small parts whereas the high deaths show up as a outlier.
+This histogram displays the overall distribution and frequency of COVID-19 Deaths counts across all filters. It highlights that the lower death counts show up as small parts whereas the high deaths show up as an outlier.
 
 ## Plot 2: Boxplot of COVID-19 Deaths by Sex
 
@@ -45,10 +45,10 @@ boxplot(COVID.19.Deaths ~Sex,
 
 ```
 
-This box plot compares the median, spread and range of COVID-19 deaths between males and females. It shows variability and highlights whether one group had a higher mortality rate.
+This box plot compares the median, spread and range of COVID-19 deaths between males and females. It shows variability and highlights that there does not seem to be a significant difference in COVID-19 Death counts between males and females, but males appear to have a slightly higher median and greater range, with the upper range (Q3) of COVID-19 death counts being much higher than females.
 
 
-## Plot 3: Bar Plot of COVID-19 deaths by age
+## Plot 3: Bar Plot of COVID-19 deaths by Age
 
 ```{r}
 
@@ -61,10 +61,10 @@ barplot(age_totals,
 
 ```
 
-This bar plot shows the total COVID-19 Deaths across age groups only. We are clearly able to intrepret that as someone gets older, they have a higher mortality rate and are more prone to be affected by COVID-19
+This bar plot shows the total COVID-19 Deaths across age groups only. From the results, we can interpret there is a strong correlation with increased number of COVID-19 Deaths and older age.
 
 
-## Plot 4: Line plot for percentage of all deaths
+## Plot 4: Line plot for Percentage of Total Deaths that are COVID-19 Deaths
 ```{r}
 age_combined <- aggregate(
   cbind(COVID.19.Deaths, Total.Deaths) ~ Age.Group, 
@@ -84,34 +84,39 @@ age_combined <- age_combined[order(age_combined$Age.Group), ]
 
 pct <- (age_combined$COVID.19.Deaths / age_combined$Total.Deaths) * 100
 
+par(mar = c(10, 5, 4, 2)) #margin adjustment: increasing length to bottom to 10 
 
 plot(
   pct, 
   type = "b", 
   pch = 20,
   xaxt = "n",
-  xlab = '',
+  xlab = "",
   ylab = "COVID-19 % of Total Deaths",
   main = "COVID-19 Share of Total Deaths by Age"
 )
 
-axis(1, at = 1:nrow(age_combined), labels = age_combined$Age.Group, las = 2)
+axis(1, at = 1:nrow(age_combined), labels = age_combined$Age.Group, las = 2, cex.axis = 0.7)
+
+mtext("Age Group", side = 1, line = 5)
 ```
 
-This line plot shows the percentage of COVID-19 deaths relative to total deaths across the age groups. It portrays how the percentage of deaths change with the age groups.
+This line plot shows the percentage of COVID-19 deaths relative to total deaths across the age groups. It portrays how the percentage of deaths change with the age groups. Specifically, it shows how the percentage of deaths that are COVID-19 increases drastically during for the 20 - 40 year old age groups, and then stabilizes at a high percentage of around 10% for the age groups older than 50 years old.
 
-## Plot 5: COVID-19 vs. Pneumonia Share of Deaths by Age and Sex
+## Plot 5: Side-by-Side Line Plots for COVID-19 vs. Pneumonia Share of Deaths by Age and Sex
 
 ```{r}
 male <- covid_cleaned[covid_cleaned$Sex == "Male", ]
 female <- covid_cleaned[covid_cleaned$Sex == "Female", ]
 
-par(mfrow = c(1, 2), mar = c(8, 4, 4, 1))
+par(mfrow = c(1, 2), mar = c(7, 4, 4, 1), oma = c(0, 0, 2, 0))
+
 
 plot(male$covid_pct_of_all, type = "b", ylim = c(0, 12), xaxt = "n",
      xlab = "", ylab = "% of all deaths", main = "Male")
 lines(male$pneu_pct_of_all, type = "b", col = "blue")
-axis(1, at = 1:11, labels = male$Age.Group, las = 2)
+axis(1, at = 1:11, labels = male$Age.Group, las = 2, cex.axis = 0.7)
+mtext("Age Group", side = 1, line = 6)
 legend("bottomright", legend = c("COVID-19", "Pneumonia"),
        col = c("black", "blue"), lty = 1)
 
@@ -119,9 +124,19 @@ legend("bottomright", legend = c("COVID-19", "Pneumonia"),
 plot(female$covid_pct_of_all, type = "b", ylim = c(0, 12), xaxt = "n",
      xlab = "", ylab = "% of all deaths", main = "Female")
 lines(female$pneu_pct_of_all, type = "b", col = "blue")
-axis(1, at = 1:11, labels = female$Age.Group, las = 2)
+axis(1, at = 1:11, labels = female$Age.Group, las = 2, cex.axis = 0.7)
+mtext("Age Group", side = 1, line = 6)
 legend("bottomright", legend = c("COVID-19", "Pneumonia"),
        col = c("black", "blue"), lty = 1)
+
+mtext(
+  "COVID-19 and Pneumonia Share of Total Deaths by Sex and Age",
+  outer = TRUE,
+  side = 3,
+  line = 1,
+  cex = 1.1,
+  font = 2
+)
 
 par(mfrow = c(1, 1))
 ```
@@ -129,7 +144,7 @@ These line plots compares how much of all deaths in each age group are due to CO
 
 Both COVID-19 and pneumonia related deaths increase as age increases, so age has a visible effect on deaths. Sex does not appear to have a large effect between them, as the two lines follow similar patterns. However, at ages 85 and older, the shares drop for females by about 2-3% in both COVID-19 and pneumonia while males stay near 10%.
 
-## Plot 6: Side-by-Side Bar Plot for Male vs. Female Covid-19 Deaths by Age Group
+## Plot 6: Side-by-Side Bar Plot for Male vs. Female COVID-19 Deaths by Age Group
 
 ```{r}
 age_deaths_sex <- aggregate(
@@ -178,7 +193,7 @@ text(
 ```
 This side-by-side bar plot shows the count comparison of COVID-19 Deaths based on 11 different age groups while also differentiating between the counts for males vs females. 
 
-This shows a similar trend to Plot 5, with the count of COVID-19 deaths increasing as the age group increases. However, the differences in count between males and females shows that typically males have a significantly higher COVID-19 death count per age group until the oldest age group of 85 years and over, where females have a higher COVID death count than males. 
+This shows a similar trend to Plot 3, with the count of COVID-19 deaths increasing as the age group increases. However, the differences in count between males and females shows that typically males have a significantly higher COVID-19 death count per age group until the oldest age group of 85 years and over, where females have a higher COVID death count than males. 
 
 ## Plot 7: Side-by-Side Bar Plot for Male vs. Female Pneumonia Deaths by Age Group
 
@@ -264,7 +279,6 @@ barplot_byside3 <- barplot(
   legend.text = TRUE,
   args.legend = list(x = "topleft")
 )
-
 
 axis(side = 1, labels = FALSE)
 

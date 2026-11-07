@@ -37,6 +37,15 @@ Preliminary plots and interpretations
 
 #### FinalReport.Rmd (and .pdf)
 Half-way report including the abstract, introduction, executive summary, data, visualization, and analysis plan
+For visualizations section: All 8 visualizations included from "figures" folder
+- figures/Plot1.png: Histogram of COVID-19 Deaths Distributions, from [31_Data_Visualization.Rmd] file
+- figures/Plot2.png: Boxplot of COVID-19 Deaths by Sex, from [31_Data_Visualization.Rmd] file
+- figures/Plot3.png: Bar Plot of COVID-19 deaths by Age, from [31_Data_Visualization.Rmd] file
+- figures/Plot4.png: Line Plot for percentage of all deaths that are COVID, from [31_Data_Visualization.Rmd] file
+- figures/Plot5.png: Side-by-Side Line Plots for COVID-19 vs. Pneumonia Share of Deaths by Age and Sex, from [31_Data_Visualization.Rmd] file
+- figures/Plot6.png: Side-by-Side Bar Plot for Male vs. Female COVID-19 Deaths by Age Group, from [31_Data_Visualization.Rmd] file
+- figures/Plot7.png: Side-by-Side Bar Plot for Male vs. Female Pneumonia Deaths by Age Group, from [31_Data_Visualization.Rmd] file
+- figures/Plot8.png: Side-by-Side Bar Plot for Male vs. Female Total Deaths by Age Group, from [31_Data_Visualization.Rmd] file 
 
 #### RData and Rhistory
 These files are saved automatically by R, and are not needed to reproduce the results
